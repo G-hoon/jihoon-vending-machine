@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+
+button {
+  cursor: pointer;
+}
