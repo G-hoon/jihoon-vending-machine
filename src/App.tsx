@@ -1,6 +1,6 @@
 import "./App.css";
-import { INITIAL_BEVERAGES } from "./constants";
-import type { BeverageId, CashUnit } from "./types";
+import { INITIAL_BEVERAGES } from "@/constants";
+import type { BeverageId, CashUnit } from "@/types";
 import { Display, BeverageSelector, PaymentPanel } from "@/components";
 
 function App() {
