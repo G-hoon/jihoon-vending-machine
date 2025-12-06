@@ -1,6 +1,26 @@
 import "./App.css";
+import { INITIAL_BEVERAGES } from "./constants";
+import type { BeverageId, CashUnit } from "./types";
+import { Display, BeverageSelector, PaymentPanel } from "@/components";
 
 function App() {
+  // 임시 데이터
+  const balance = 0;
+  const message = "음료를 선택하신 후 금액을 투입해주세요";
+  const beverages = Object.values(INITIAL_BEVERAGES);
+
+  // 임시
+  const handleBeverageSelect = (id: BeverageId) => {
+    console.log("선택한 음료:", id);
+  };
+
+  const handleCashInsert = (amount: CashUnit) => {
+    console.log("투입한 금액:", amount);
+  };
+
+  const handleCancel = () => {
+    console.log("취소");
+  };
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       {/* 자판기 컨테이너 */}
@@ -15,18 +35,17 @@ function App() {
         <main className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <section className="bg-gray-900 text-green-400 p-6 rounded-xl h-32 flex items-center justify-center">
-                <p className="text-xl font-mono">디스플레이 영역</p>
-              </section>
-
-              <section className="bg-gray-50 p-6 rounded-xl min-h-[300px] flex items-center justify-center">
-                <p className="text-gray-400">음료 선택 영역</p>
-              </section>
+              <Display balance={balance} message={message} />
+              <BeverageSelector
+                beverages={beverages}
+                onSelect={handleBeverageSelect}
+              />
             </div>
 
-            <section className="bg-gray-50 p-6 rounded-xl min-h-[400px] flex items-center justify-center">
-              <p className="text-gray-400">결제 패널</p>
-            </section>
+            <PaymentPanel
+              onCashInsert={handleCashInsert}
+              onCancel={handleCancel}
+            />
           </div>
 
           {/* 하단: 출력구 */}
