@@ -14,18 +14,21 @@ export const INITIAL_BEVERAGES: Record<BeverageId, Beverage> = {
     name: "콜라",
     price: 1100,
     stock: 10,
+    emoji: "🥤",
   },
   water: {
     id: "water",
     name: "물",
     price: 600,
     stock: 10,
+    emoji: "💧",
   },
   coffee: {
     id: "coffee",
     name: "커피",
     price: 700,
     stock: 10,
+    emoji: "☕",
   },
 };
 

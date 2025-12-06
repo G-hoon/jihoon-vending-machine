@@ -10,6 +10,7 @@ export interface Beverage {
   name: string;
   price: number;
   stock: number;
+  emoji: string;
 }
 
 // 거스름돈 재고

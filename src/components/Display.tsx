@@ -17,7 +17,7 @@ export default function Display({ balance, message }: DisplayProps) {
 
         {/* 메시지 표시 */}
         <div className="text-center">
-          <p className="text-sm">{message}</p>
+          <p className="text-xs sm:text-sm">{message}</p>
         </div>
       </div>
     </section>

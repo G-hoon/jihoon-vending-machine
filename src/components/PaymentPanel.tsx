@@ -30,14 +30,6 @@ export default function PaymentPanel({
           </div>
         </div>
 
-        {/* 카드 결제 */}
-        <div>
-          <h3 className="text-sm font-medium text-gray-600 mb-2">카드 결제</h3>
-          <button className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors font-semibold">
-            카드 결제
-          </button>
-        </div>
-
         {/* 취소 버튼 */}
         <button
           onClick={onCancel}

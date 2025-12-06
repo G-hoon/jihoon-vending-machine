@@ -16,15 +16,21 @@ function App() {
   );
   const [beverages, setBeverages] =
     useState<Record<BeverageId, Beverage>>(INITIAL_BEVERAGES);
+  const [dispensedBeverage, setDispensedBeverage] = useState<Beverage | null>(
+    null
+  );
 
   // 현금 투입
   const handleCashInsert = (amount: CashUnit) => {
+    setDispensedBeverage(null); // 출력구 리셋
     setBalance((prev) => prev + amount);
     setMessage(`${amount}원이 투입되었습니다. 잔액: ${balance + amount}원`);
   };
 
   // 음료 선택 및 구매
   const handleBeverageSelect = (id: BeverageId) => {
+    setDispensedBeverage(null); // 출력구 리셋
+
     const beverage = beverages[id];
 
     if (!beverage) {
@@ -45,7 +51,7 @@ function App() {
     }
 
     // 구매 처리
-    const change = balance - beverage.price;
+    const remainingBalance = balance - beverage.price;
 
     // 재고 차감
     setBeverages((prev) => ({
@@ -56,9 +62,13 @@ function App() {
       },
     }));
 
-    setBalance(0);
+    // 음료 배출
+    setDispensedBeverage(beverage);
+    setBalance(remainingBalance);
     setMessage(
-      change > 0 ? `구매 완료! 거스름돈 ${change}원이 반환됩니다` : "구매 완료!"
+      remainingBalance > 0
+        ? `구매 완료! 잔액: ${remainingBalance}원`
+        : "구매 완료!"
     );
   };
 
@@ -71,6 +81,7 @@ function App() {
 
     const refundAmount = balance;
     setBalance(0);
+    setDispensedBeverage(null);
     setMessage(`${refundAmount}원이 반환되었습니다`);
   };
 
@@ -101,7 +112,10 @@ function App() {
             />
           </div>
 
-          <OutputTray hasItem={true} />
+          <OutputTray
+            hasItem={!!dispensedBeverage}
+            beverage={dispensedBeverage}
+          />
         </main>
       </div>
     </div>
