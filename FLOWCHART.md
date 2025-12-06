@@ -62,17 +62,6 @@ flowchart TD
     CancelCheck2 -->|Yes| RefundCash
     CancelCheck2 -->|No| NoRefund2[반환 없음 메시지]
     NoRefund2 --> End5([종료])
-
-    style Start fill:#e1f5e1
-    style End1 fill:#ffe1e1
-    style End2 fill:#ffe1e1
-    style End3 fill:#ffe1e1
-    style End4 fill:#ffe1e1
-    style End5 fill:#ffe1e1
-    style InsertCash fill:#fff4e1
-    style ProcessPayment fill:#e1f0ff
-    style DispenseBeverage1 fill:#f0e1ff
-    style DispenseBeverage2 fill:#f0e1ff
 ```
 
 ## 2. 예외 처리 플로우
@@ -87,7 +76,7 @@ flowchart TD
     Error1 --> End1([종료])
 
     CheckStock1 -->|Yes| CheckBalance{잔액 충분?}
-    CheckBalance -->|No| Error2[❌ 잔액 부족 안내<br/>추가 필요 금액 표시]
+    CheckBalance -->|No| Error2[❌ 잔액 부족 안내추가 필요 금액 표시]
     Error2 --> WaitCash[현금 추가 투입 대기]
     WaitCash --> CheckBalance
 
@@ -115,14 +104,4 @@ flowchart TD
 
     RefundCheck -->|Yes| Refund[✅ 현금 반환]
     Refund --> End5([종료])
-
-    style Error1 fill:#ffe1e1
-    style Error2 fill:#ffe1e1
-    style Error3 fill:#ffe1e1
-    style Error4 fill:#ffe1e1
-    style Error5 fill:#ffe1e1
-    style Success1 fill:#e1f5e1
-    style Success2 fill:#e1f5e1
-    style ProcessCash fill:#e1f0ff
-    style ProcessCard fill:#e1f0ff
 ```
