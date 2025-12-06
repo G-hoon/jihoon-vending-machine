@@ -4,85 +4,55 @@ import {
   OutputTray,
   PaymentPanel,
 } from "@/components";
-import { INITIAL_BEVERAGES } from "@/constants";
-import type { Beverage, BeverageId, CashUnit } from "@/types";
-import { useState } from "react";
+import type { BeverageId, CashUnit } from "@/types";
 import "./App.css";
+import { useBeverageManagement, useOutputTray, usePayment } from "./hooks";
 
 function App() {
-  const [balance, setBalance] = useState(0);
-  const [message, setMessage] = useState(
-    "음료를 선택하신 후 금액을 투입해주세요"
-  );
-  const [beverages, setBeverages] =
-    useState<Record<BeverageId, Beverage>>(INITIAL_BEVERAGES);
-  const [dispensedBeverage, setDispensedBeverage] = useState<Beverage | null>(
-    null
-  );
+  const payment = usePayment();
+  const beverageManagement = useBeverageManagement();
+  const outputTray = useOutputTray();
 
-  // 현금 투입
   const handleCashInsert = (amount: CashUnit) => {
-    setDispensedBeverage(null); // 출력구 리셋
-    setBalance((prev) => prev + amount);
-    setMessage(`${amount}원이 투입되었습니다. 잔액: ${balance + amount}원`);
+    outputTray.clear();
+    payment.insertCash(amount);
   };
 
-  // 음료 선택 및 구매
   const handleBeverageSelect = (id: BeverageId) => {
-    setDispensedBeverage(null); // 출력구 리셋
+    outputTray.clear();
 
-    const beverage = beverages[id];
-
-    if (!beverage) {
-      setMessage("존재하지 않는 음료입니다");
+    // 구매 가능 여부 검증
+    const validation = beverageManagement.validatePurchase(id, payment.balance);
+    if (!validation.valid) {
+      payment.updateMessage(validation.error!);
       return;
     }
 
-    if (beverage.stock === 0) {
-      setMessage("해당 음료의 재고가 없습니다");
-      return;
-    }
+    // 음료 구매
+    const beverage = beverageManagement.purchaseBeverage(id);
+    if (!beverage) return;
 
-    if (balance < beverage.price) {
-      setMessage(
-        `잔액이 부족합니다. ${beverage.price - balance}원이 더 필요합니다`
-      );
-      return;
-    }
-
-    // 구매 처리
-    const remainingBalance = balance - beverage.price;
-
-    // 재고 차감
-    setBeverages((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        stock: prev[id].stock - 1,
-      },
-    }));
+    // 잔액 차감
+    const success = payment.deductBalance(beverage.price);
+    if (!success) return;
 
     // 음료 배출
-    setDispensedBeverage(beverage);
-    setBalance(remainingBalance);
-    setMessage(
+    outputTray.dispense(beverage);
+
+    // 메시지 업데이트
+    const remainingBalance = payment.balance;
+    payment.updateMessage(
       remainingBalance > 0
         ? `구매 완료! 잔액: ${remainingBalance}원`
         : "구매 완료!"
     );
   };
 
-  // 취소/반환
   const handleCancel = () => {
-    if (balance === 0) {
-      setMessage("반환할 금액이 없습니다");
-      return;
+    const refunded = payment.refund();
+    if (refunded !== null) {
+      outputTray.clear();
     }
-
-    const refundAmount = balance;
-    setBalance(0);
-    setDispensedBeverage(null);
-    setMessage(`${refundAmount}원이 반환되었습니다`);
   };
 
   return (
@@ -99,9 +69,9 @@ function App() {
         <main className="p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
-              <Display balance={balance} message={message} />
+              <Display balance={payment.balance} message={payment.message} />
               <BeverageSelector
-                beverages={Object.values(beverages)}
+                beverages={beverageManagement.beverages}
                 onSelect={handleBeverageSelect}
               />
             </div>
@@ -115,8 +85,8 @@ function App() {
           </div>
 
           <OutputTray
-            hasItem={!!dispensedBeverage}
-            beverage={dispensedBeverage}
+            hasItem={!!outputTray.dispensedBeverage}
+            beverage={outputTray.dispensedBeverage}
           />
         </main>
       </div>
