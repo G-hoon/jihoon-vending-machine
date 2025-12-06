@@ -98,7 +98,7 @@ function App() {
         {/* 메인 컨텐츠 영역 */}
         <main className="p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
               <Display balance={balance} message={message} />
               <BeverageSelector
                 beverages={Object.values(beverages)}
@@ -106,10 +106,12 @@ function App() {
               />
             </div>
 
-            <PaymentPanel
-              onCashInsert={handleCashInsert}
-              onCancel={handleCancel}
-            />
+            <div className="order-1 lg:order-2">
+              <PaymentPanel
+                onCashInsert={handleCashInsert}
+                onCancel={handleCancel}
+              />
+            </div>
           </div>
 
           <OutputTray
