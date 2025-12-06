@@ -5,26 +5,73 @@ import {
   PaymentPanel,
 } from "@/components";
 import { INITIAL_BEVERAGES } from "@/constants";
-import type { BeverageId, CashUnit } from "@/types";
+import type { Beverage, BeverageId, CashUnit } from "@/types";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
-  // 임시 데이터
-  const balance = 0;
-  const message = "음료를 선택하신 후 금액을 투입해주세요";
-  const beverages = Object.values(INITIAL_BEVERAGES);
+  const [balance, setBalance] = useState(0);
+  const [message, setMessage] = useState(
+    "음료를 선택하신 후 금액을 투입해주세요"
+  );
+  const [beverages, setBeverages] =
+    useState<Record<BeverageId, Beverage>>(INITIAL_BEVERAGES);
 
-  // 임시
-  const handleBeverageSelect = (id: BeverageId) => {
-    console.log("선택한 음료:", id);
-  };
-
+  // 현금 투입
   const handleCashInsert = (amount: CashUnit) => {
-    console.log("투입한 금액:", amount);
+    setBalance((prev) => prev + amount);
+    setMessage(`${amount}원이 투입되었습니다. 잔액: ${balance + amount}원`);
   };
 
+  // 음료 선택 및 구매
+  const handleBeverageSelect = (id: BeverageId) => {
+    const beverage = beverages[id];
+
+    if (!beverage) {
+      setMessage("존재하지 않는 음료입니다");
+      return;
+    }
+
+    if (beverage.stock === 0) {
+      setMessage("해당 음료의 재고가 없습니다");
+      return;
+    }
+
+    if (balance < beverage.price) {
+      setMessage(
+        `잔액이 부족합니다. ${beverage.price - balance}원이 더 필요합니다`
+      );
+      return;
+    }
+
+    // 구매 처리
+    const change = balance - beverage.price;
+
+    // 재고 차감
+    setBeverages((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        stock: prev[id].stock - 1,
+      },
+    }));
+
+    setBalance(0);
+    setMessage(
+      change > 0 ? `구매 완료! 거스름돈 ${change}원이 반환됩니다` : "구매 완료!"
+    );
+  };
+
+  // 취소/반환
   const handleCancel = () => {
-    console.log("취소");
+    if (balance === 0) {
+      setMessage("반환할 금액이 없습니다");
+      return;
+    }
+
+    const refundAmount = balance;
+    setBalance(0);
+    setMessage(`${refundAmount}원이 반환되었습니다`);
   };
 
   return (
@@ -43,7 +90,7 @@ function App() {
             <div className="lg:col-span-2 space-y-6">
               <Display balance={balance} message={message} />
               <BeverageSelector
-                beverages={beverages}
+                beverages={Object.values(beverages)}
                 onSelect={handleBeverageSelect}
               />
             </div>
