@@ -26,6 +26,7 @@ function App() {
   const handleCancel = () => {
     console.log("취소");
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       {/* 자판기 컨테이너 */}
@@ -37,7 +38,7 @@ function App() {
         </header>
 
         {/* 메인 컨텐츠 영역 */}
-        <main className="p-8">
+        <main className="p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
               <Display balance={balance} message={message} />
@@ -53,7 +54,7 @@ function App() {
             />
           </div>
 
-          <OutputTray />
+          <OutputTray hasItem={true} />
         </main>
       </div>
     </div>

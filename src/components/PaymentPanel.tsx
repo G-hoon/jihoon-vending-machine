@@ -12,7 +12,7 @@ export default function PaymentPanel({
   onCancel,
 }: PaymentPanelProps) {
   return (
-    <section className="bg-gray-50 p-6 rounded-xl">
+    <section className="bg-gray-50 p-2 sm:p-6 rounded-xl">
       <h2 className="text-lg font-semibold mb-4 text-gray-700">결제</h2>
 
       <div className="space-y-4">

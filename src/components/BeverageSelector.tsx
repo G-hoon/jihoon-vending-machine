@@ -10,10 +10,10 @@ export default function BeverageSelector({
   onSelect,
 }: BeverageSelectorProps) {
   return (
-    <section className="bg-gray-50 p-6 rounded-xl">
+    <section className="bg-gray-50 p-2 sm:p-6 rounded-xl">
       <h2 className="text-lg font-semibold mb-4 text-gray-700">음료 선택</h2>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         {beverages.map((beverage) => (
           <button
             key={beverage.id}
