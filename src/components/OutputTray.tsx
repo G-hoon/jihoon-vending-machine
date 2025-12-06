@@ -11,7 +11,7 @@ export default function OutputTray({
 }: OutputTrayProps) {
   return (
     <section className="mt-6 bg-gray-800 p-2 sm:p-6 rounded-xl">
-      <div className="bg-gray-700/50 rounded-lg p-6 min-h-[100px] flex items-center justify-center border-2 border-dashed border-gray-600 backdrop-blur-sm">
+      <div className="bg-gray-700/50 rounded-lg p-4 min-h-[160px] flex items-center justify-center border-2 border-dashed border-gray-600 backdrop-blur-sm">
         {hasItem && beverage ? (
           <div className="text-center animate-bounce">
             <div className="text-5xl mb-2">{beverage.emoji}</div>
