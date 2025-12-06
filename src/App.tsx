@@ -1,7 +1,12 @@
-import "./App.css";
+import {
+  BeverageSelector,
+  Display,
+  OutputTray,
+  PaymentPanel,
+} from "@/components";
 import { INITIAL_BEVERAGES } from "@/constants";
 import type { BeverageId, CashUnit } from "@/types";
-import { Display, BeverageSelector, PaymentPanel } from "@/components";
+import "./App.css";
 
 function App() {
   // 임시 데이터
@@ -48,10 +53,7 @@ function App() {
             />
           </div>
 
-          {/* 하단: 출력구 */}
-          <section className="mt-6 bg-gray-800 text-white py-4 rounded-xl text-center">
-            <p className="text-sm font-semibold">출력구</p>
-          </section>
+          <OutputTray />
         </main>
       </div>
     </div>

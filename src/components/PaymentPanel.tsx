@@ -1,5 +1,6 @@
 import type { CashUnit } from "@/types";
 import { CASH_UNITS } from "@/constants";
+import CashButton from "@/components/CashButton";
 
 interface PaymentPanelProps {
   onCashInsert: (amount: CashUnit) => void;
@@ -20,13 +21,11 @@ export default function PaymentPanel({
           <h3 className="text-sm font-medium text-gray-600 mb-2">현금 투입</h3>
           <div className="grid grid-cols-2 gap-2">
             {CASH_UNITS.map((unit) => (
-              <button
+              <CashButton
                 key={unit}
+                amount={unit}
                 onClick={() => onCashInsert(unit)}
-                className="bg-white py-3 px-4 rounded-lg shadow hover:shadow-md transition-shadow text-gray-800 font-semibold"
-              >
-                {unit.toLocaleString()}원
-              </button>
+              />
             ))}
           </div>
         </div>
